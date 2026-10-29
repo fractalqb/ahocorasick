@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"reflect"
 	"slices"
+	"sync"
 	"testing"
 )
 
@@ -173,6 +174,38 @@ func TestFindAllVariants(t *testing.T) {
 	} else if !reflect.DeepEqual(got, want) {
 		t.Errorf("FindAllRead() = %v, want %v", got, want)
 	}
+}
+
+func TestMatcherConcurrentUse(t *testing.T) {
+	matcher := CompileStrings([]string{"he", "she", "his", "hers"})
+	text := []byte("ushers and his friends")
+	want := convert(matcher.FindAllByteSlice(text))
+
+	const workers = 16
+	const iterations = 50
+	var wg sync.WaitGroup
+	wg.Add(workers)
+	for worker := range workers {
+		go func(worker int) {
+			defer wg.Done()
+			for iteration := range iterations {
+				got := convert(matcher.FindAllByteSlice(text))
+				if !reflect.DeepEqual(got, want) {
+					t.Errorf("worker %d iteration %d: FindAllByteSlice() = %v, want %v", worker, iteration, got, want)
+				}
+
+				gotRead, err := matcher.FindAllRead(bytes.NewReader(text))
+				if err != nil {
+					t.Errorf("worker %d iteration %d: FindAllRead() error = %v", worker, iteration, err)
+					continue
+				}
+				if got := convert(gotRead); !reflect.DeepEqual(got, want) {
+					t.Errorf("worker %d iteration %d: FindAllRead() = %v, want %v", worker, iteration, got, want)
+				}
+			}
+		}(worker)
+	}
+	wg.Wait()
 }
 
 func TestIncreaseSize(t *testing.T) {

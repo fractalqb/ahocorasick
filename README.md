@@ -2,13 +2,17 @@
 
 The fastest Golang implementation of the Aho-Corasick algorithm for string-searching.
 
+## Fork
+
+This repository is a fork of [github.com/rrethy/ahocorasick](https://github.com/rrethy/ahocorasick), maintained separately under `github.com/fractalqb/ahocorasick`. It may contain changes that are not present in the upstream project. The original MIT license and copyright notice are retained; see [LICENSE](LICENSE).
+
 ## Usage
 
 ```bash
-go get github.com/rrethy/ahocorasick@v1.0.0
+go get github.com/fractalqb/ahocorasick@v1.0.0
 ```
 
-[Documentation](https://godoc.org/github.com/RRethy/ahocorasick)
+[Documentation](https://godoc.org/github.com/fractalqb/ahocorasick)
 
 ```go
 package main
@@ -18,7 +22,7 @@ import (
 	"fmt"
 	"slices"
 
-	"github.com/rrethy/ahocorasick"
+	"github.com/fractalqb/ahocorasick"
 )
 
 func main() {

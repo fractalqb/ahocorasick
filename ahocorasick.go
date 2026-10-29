@@ -1,5 +1,13 @@
 // Package ahocorasick implements the Aho-Corasick string matching algorithm for
 // efficiently finding all instances of multiple patterns in a text.
+//
+// This package is a separately maintained fork of github.com/rrethy/ahocorasick,
+// originally written by Adam P. Regasz-Rethy. See the LICENSE file for the
+// retained copyright and license notice.
+//
+// A compiled Matcher may be shared by concurrent search calls. Callers must
+// ensure that each input can be read concurrently and is not modified during a
+// search. In particular, do not share a mutable reader between calls.
 package ahocorasick
 
 import (

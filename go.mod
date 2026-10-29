@@ -1,3 +1,3 @@
-module github.com/rrethy/ahocorasick
+module github.com/fractalqb/ahocorasick
 
 go 1.23
